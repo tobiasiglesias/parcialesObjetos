@@ -1,0 +1,15 @@
+import consumos.*
+import lineas.*
+import packs.*
+import tipoDeLineas.*
+import vencimientos.*
+
+
+describe "pdepfoni"{
+	
+	const tobias = new Linea(numero = 1149480777, tipoDeLinea = lineaComun)
+	
+	
+	
+	
+}

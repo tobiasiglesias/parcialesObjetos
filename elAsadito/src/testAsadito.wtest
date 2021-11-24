@@ -1,0 +1,93 @@
+import comesnales.*
+import criterios.*
+import platos.*
+import criteriosComida.*
+
+describe "test asadito"{
+	const osky = new Comensal(criterio = sordo, criterioComida = vegetariano, posicion = 2)
+	const moni = new Comensal(criterio = pasarTodosLosElementos, criterioComida = dietetico, posicion = 1)
+	const facu = new Comensal(criterio = cambiarDeLugar, criterioComida = new Alternado(), posicion = 3)
+	const vero = new Comensal(criterio = pasarElementoPedido, criterioComida = new CriterioMixto(), posicion = 4)
+	const tobias = new Comensal(criterio = sordo, criterioComida = dietetico, posicion = 5)
+	const fideos = new Plato(calorias = 600, esCarne = false)
+	const vacio = new Plato(calorias = 200, esCarne = true)
+	
+	
+	
+	test "pasarla bien"{
+		tobias.comer(vacio)
+		facu.comer(vacio)
+		assert.that(tobias.registroComidas().size() >= 1)
+		assert.equals(1, moni.posicion())
+		assert.that(facu.registroComidas().any( {unPlato => unPlato.esCarne()} ))
+		assert.that(vero.elementosCercanos().size() <= 3)
+		
+	}
+	
+	test "facu sabe comer Alternado"{
+		facu.comer(fideos)
+		assert.that(facu.registroComidas().size() >= 1)
+		facu.comer(vacio)
+		assert.that(facu.registroComidas().size() >= 1)
+	}
+	
+	test "osky no come carne"{
+		osky.comer(vacio)
+		osky.comer(fideos)
+		assert.notThat(osky.registroComidas().any( {unPlato => unPlato.esCarne()} ))
+	}
+	
+	test "osky pasa lo primero q tiene a mano"{
+		osky.agregarElemento("salero")
+		osky.agregarElemento("aldal")
+		osky.agregarElemento("ssljflsdfjsld")
+		osky.agregarElemento("ssjldfhlsdfj")
+		osky.pasarAlgo(tobias, "ssjldfhlsdfj")
+		assert.that(tobias.tieneElemento("salero"))
+		assert.notThat(osky.tieneElemento("salero"))
+	}
+	
+	test "moni sabe pasar todos los elementos"{
+		moni.agregarElemento("salero")
+		moni.agregarElemento("skdjfh")
+		moni.agregarElemento("ola")
+		moni.pasarAlgo(tobias, "ola")
+		assert.that(tobias.elementosCercanos().size() == 3)
+		assert.that(moni.elementosCercanos().size() == 0)
+	}
+	
+	test "facu sabe cambiar de lugar"{
+		facu.agregarElemento("salero")
+		facu.agregarElemento("skdjfh")
+		facu.agregarElemento("ola")
+		moni.agregarElemento("xD")
+		facu.pasarAlgo(moni, "salero")
+		
+		assert.that(moni.elementosCercanos().size() == 3)
+		assert.that(facu.elementosCercanos().size() == 1)
+		
+	}
+	
+	test "facu come fideos y esta pipon"{
+		facu.comer(fideos)
+		assert.that(facu.estaPipon())
+	}
+	
+	
+	
+	// ultimo punto
+	
+	// a) el polimorfismo fue usado en los criterios, la ventaja del poliformismo en este caso es que nos libera de 
+	// hacer una cadena de ifs larguisima, y ademas los criterios son polimorficos con los bloques, por lo tanto se
+	// se le podria pasar a la persona un bloque en la lista y este funcionaria
+	
+	
+	// b) ---
+	
+	
+	//c) la composicion fue usada en los criterios de comida, mas especificamente en criterioMixto,
+	// esto sirve cuando se quiere hacer algo que tenga el comportamiento de dos clases o objetos distintos, eliminando asi
+	// la necesidad de una herencia doble
+	
+	
+}

@@ -1,0 +1,37 @@
+import Persona.*
+import emociones.*
+import Recuerdo.*
+
+describe "IntensaMente test"{
+	
+	const riley = new Persona(nivelDeFelicidad = 1000, emocionDominante = alegria)
+	const recuerdoFeliz = new Recuerdo(descripcion = "hola", emocion = alegria)
+	const recuerdoTriste = new Recuerdo(descripcion = "hola", emocion = tristeza)
+	const recuerdoLargo = new Recuerdo(descripcion = "uno dos tres cuatro cinco seis siete ocho nueve diez once", emocion = tristeza)
+	
+	
+	
+	test "riley sabe vivir eventos"{
+		riley.vivirUnEvento("riley estaba feliz")
+		assert.equals(1, riley.recuerdosDelDia().size())
+			
+	}
+	
+	test "riley asienta un recuerdo triste"{
+		riley.asentarRecuerdo(recuerdoTriste)
+		assert.that(riley.pensamientosCentrales().contains(recuerdoTriste))
+		assert.equals(900, riley.nivelDeFelicidad())
+	}
+	
+	test "sabe distinguir pensamientos centrales dificiles de explicar" {
+		riley.agregarPensamientoCentral(recuerdoLargo)
+		assert.that(riley.pensamientosCentralesDificilesDeExplicar().contains(recuerdoLargo))
+		
+	}
+	
+	
+	
+	
+	
+	
+}
